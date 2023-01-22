@@ -8,17 +8,18 @@ import {
   VersionColumn,
 } from 'typeorm';
 import { Currency } from './Currency';
+import { CreateEmployeeDto } from '../dto/create-employee.dto';
 
 @Entity()
 export class Employee {
   @PrimaryGeneratedColumn('uuid')
-  id: number;
+  id: string;
 
   @Column()
   name: string;
 
   @Column()
-  salary: number;
+  salary: number; // deviating from string to number
 
   @Column({ type: 'simple-enum', enum: Currency })
   currency: Currency;
@@ -27,10 +28,10 @@ export class Employee {
   onContract: boolean; // deviating from snake_case to camelCase intentionally
 
   @Column()
-  department: string;
+  department: string; // TODO: Switch to enum
 
   @Column()
-  subDepartment: string;
+  subDepartment: string; // TODO: Switch to enum
 
   @CreateDateColumn()
   createdAt: Date;
@@ -43,4 +44,16 @@ export class Employee {
 
   @VersionColumn()
   version: number;
+
+  // TODO: improve to support update DTO too
+  public static fromDto(dto: CreateEmployeeDto): Employee {
+    const employee = new Employee();
+    employee.name = dto.name;
+    employee.salary = dto.salary;
+    employee.currency = dto.currency;
+    employee.onContract = dto.on_contract ?? false;
+    employee.department = dto.department;
+    employee.subDepartment = dto.sub_department;
+    return employee;
+  }
 }

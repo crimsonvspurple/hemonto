@@ -6,13 +6,15 @@ import {
   Patch,
   Param,
   Delete,
+  Response,
 } from '@nestjs/common';
+import { Response as Res } from 'express';
 import { EmployeesService } from './employees.service';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
 
-@Controller('employees')
-export class EmployeesController {
+@Controller({ path: 'employees', version: '1' })
+export class EmployeesControllerV1 {
   constructor(private readonly employeesService: EmployeesService) {}
 
   @Post()
@@ -27,7 +29,7 @@ export class EmployeesController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.employeesService.findOne(+id);
+    return this.employeesService.findOne(id);
   }
 
   @Patch(':id')
@@ -35,11 +37,20 @@ export class EmployeesController {
     @Param('id') id: string,
     @Body() updateEmployeeDto: UpdateEmployeeDto,
   ) {
-    return this.employeesService.update(+id, updateEmployeeDto);
+    return this.employeesService.update(id, updateEmployeeDto);
   }
 
+  // noinspection SpellCheckingInspection
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.employeesService.remove(+id);
+  async remove(
+    @Param('id') id: string,
+    @Response({ passthrough: true }) res: Res,
+  ) {
+    if (await this.employeesService.remove(id)) {
+      res.status(204); // 204 No Content for successful deletion
+    } else {
+      res.status(400); // 400 Bad Request for unsuccessful deletion
+    }
+    return;
   }
 }

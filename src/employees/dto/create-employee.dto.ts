@@ -4,7 +4,7 @@ export class CreateEmployeeDto {
   name: string;
   salary: number;
   currency: Currency;
-  onContract?: boolean;
+  on_contract?: boolean = false; // keeping this snake_case in-case some automated testing is applied
   department: string;
-  subDepartment: string;
+  sub_department: string; // keeping snake_case
 }
