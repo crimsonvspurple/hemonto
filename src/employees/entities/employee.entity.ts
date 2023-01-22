@@ -49,7 +49,7 @@ export class Employee {
   public static fromDto(dto: CreateEmployeeDto): Employee {
     const employee = new Employee();
     employee.name = dto.name;
-    employee.salary = dto.salary;
+    employee.salary = +dto.salary; // what is consistency? https://i.stack.imgur.com/LLrgj.png
     employee.currency = dto.currency;
     employee.onContract = dto.on_contract ?? false;
     employee.department = dto.department;

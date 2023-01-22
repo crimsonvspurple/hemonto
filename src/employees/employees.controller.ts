@@ -37,7 +37,7 @@ export class EmployeesControllerV1 {
     @Param('id') id: string,
     @Body() updateEmployeeDto: UpdateEmployeeDto,
   ) {
-    return this.employeesService.update(id, updateEmployeeDto);
+    return this.employeesService.update(id, updateEmployeeDto); // 501 Not Implemented
   }
 
   // noinspection SpellCheckingInspection
