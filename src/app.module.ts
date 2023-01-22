@@ -7,7 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
   imports: [
     TypeOrmModule.forRoot({
       type: 'better-sqlite3',
-      database: 'db.sqlite',
+      database: 'db/db.sqlite',
       autoLoadEntities: true,
       synchronize: true, // TODO: remove this in production or use migrations
     }),
