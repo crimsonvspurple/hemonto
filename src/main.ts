@@ -18,7 +18,7 @@ async function bootstrap() {
       'A Proof of Concept API System. <br> \
       - User: example@eminence.red | Password: ACvJW94aAxxWfLucC7HZwDlFiwElvq <br> \
       - Login at /auth to get a token. Use the token in the Authorize button. <br> \
-      - You should seed the employees first. User is auto seeded at start',
+      - You should seed the employees first. User is auto seeded at start.',
     )
     .addBearerAuth({ type: 'http', scheme: 'bearer', bearerFormat: 'JWT' })
     .setVersion('1.0')
