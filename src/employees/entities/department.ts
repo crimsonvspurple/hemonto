@@ -3,8 +3,8 @@
  * If we are to support many more departments, we should make departments/sub-departments actual entities
  */
 export enum Department {
-  ENGINEERING = 'Engineering',
-  BANKING = 'Banking',
-  OPERATIONS = 'Operations',
-  ADMINISTRATION = 'Administration',
+  Engineering = 'Engineering',
+  Banking = 'Banking',
+  Operations = 'Operations',
+  Administration = 'Administration',
 }
