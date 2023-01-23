@@ -44,4 +44,8 @@ export class EmployeesService {
     }
     return result.affected > 0;
   }
+
+  removeAll() {
+    return this.repository.clear();
+  }
 }
