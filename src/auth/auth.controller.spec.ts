@@ -46,19 +46,4 @@ describe('AuthController', () => {
     expect(configService).toBeDefined();
     expect(jwtService).toBeDefined();
   });
-
-  // describe('login', () => {
-  //   it('should return an access_token', async () => {
-  //     const loginDto = {
-  //       username: usersSeed[0].username,
-  //       password: usersSeed[0].password,
-  //     };
-  //     const token = (await controller.login(loginDto)).accessToken;
-  //     expect(token).toBeDefined();
-  //     const decodedToken = jwtService.decode(token);
-  //     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  //     // @ts-ignore
-  //     expect(decodedToken['username']).toEqual(loginDto.username);
-  //   });
-  //  });
 });

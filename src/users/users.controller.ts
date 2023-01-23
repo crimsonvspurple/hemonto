@@ -26,7 +26,7 @@ export class UsersControllerV1 {
   @HttpCode(204)
   @ApiOperation({
     summary: 'Generate users from a seed file',
-    description: 'Clears table first',
+    description: 'Wont do anything if there are already users in the database',
   })
   @ApiResponse({
     status: 204,

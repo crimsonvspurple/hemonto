@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable, OnModuleInit } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  OnApplicationBootstrap,
+} from '@nestjs/common';
 import { User } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -8,10 +12,9 @@ import { ConfigService } from '@nestjs/config';
 import { usersSeed } from './seed/usersSeed';
 
 @Injectable()
-export class UsersService implements OnModuleInit {
-  async onModuleInit(): Promise<void> {
+export class UsersService implements OnApplicationBootstrap {
+  async onApplicationBootstrap(): Promise<void> {
     await this.seed();
-    console.log('Users seeded!');
   }
   constructor(
     @InjectRepository(User) private readonly repository: Repository<User>,
@@ -40,7 +43,9 @@ export class UsersService implements OnModuleInit {
   }
 
   async seed(): Promise<User[]> {
-    await this.removeAll(); // clear user table first
+    if ((await this.findAll()).length > 0) {
+      return [];
+    }
     const rounds = this.configService.get<number>('bcrypt.rounds') ?? 10;
     return this.repository.save(
       usersSeed.map((user) => {

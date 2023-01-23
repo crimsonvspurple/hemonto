@@ -1,4 +1,10 @@
-import { Body, Controller, Post, UnauthorizedException } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpCode,
+  Post,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -12,6 +18,7 @@ export class AuthControllerV1 {
 
   //@UseGuards(JwtAuthGuard)
   @Post()
+  @HttpCode(200)
   @ApiOperation({ summary: 'Get a new token' })
   @ApiResponse({ status: 200, description: 'Your access_token' })
   @ApiBody({
