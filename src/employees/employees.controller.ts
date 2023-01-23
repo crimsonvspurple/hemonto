@@ -9,12 +9,14 @@ import {
   ParseUUIDPipe,
   Patch,
   Post,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { EmployeesService } from './employees.service';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import {
+  ApiBearerAuth,
   ApiBody,
   ApiOperation,
   ApiParam,
@@ -23,9 +25,12 @@ import {
 } from '@nestjs/swagger';
 import { Employee } from './entities/employee.entity';
 import { NotFoundInterceptor } from '../interceptors/not-found.interceptor';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @Controller({ path: 'employees', version: '1' })
 @ApiTags('employees')
+@UseGuards(JwtAuthGuard)
+@ApiBearerAuth()
 export class EmployeesControllerV1 {
   constructor(private readonly employeesService: EmployeesService) {}
 
