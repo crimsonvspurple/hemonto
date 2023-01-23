@@ -3,6 +3,7 @@ import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { usersSeed } from '../users/seed/usersSeed';
+import { TokenDto } from './dto/token';
 
 @Controller({ path: 'auth', version: '1' })
 @ApiTags('auth')
@@ -30,12 +31,13 @@ export class AuthControllerV1 {
       },
     },
   })
-  async login(@Body() loginDto: LoginDto) {
-    return (
-      (await this.authService.login(loginDto)) ??
-      new UnauthorizedException({
+  async login(@Body() loginDto: LoginDto): Promise<TokenDto> {
+    const token = await this.authService.login(loginDto);
+    if (!token) {
+      throw new UnauthorizedException({
         description: 'Username and/or password is incorrect',
-      })
-    );
+      });
+    }
+    return token;
   }
 }
