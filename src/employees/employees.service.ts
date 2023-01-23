@@ -31,9 +31,11 @@ export class EmployeesService {
     throw new NotImplementedException();
   }
 
-  // this function should return true if deletion was successful
-  // should return false if deletion was unsuccessful
-  // should return null if the record was not found
+  /**
+   * this function should return true if deletion was successful
+   * should return false if deletion was unsuccessful
+   * should return false if the record was not found
+   */
   async remove(id: string): Promise<boolean> {
     const result: DeleteResult = await this.repository.delete(id);
     if (result.affected == null) {
