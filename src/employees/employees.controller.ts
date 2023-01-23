@@ -4,10 +4,12 @@ import {
   Delete,
   Get,
   HttpCode,
+  NotFoundException,
   Param,
   ParseUUIDPipe,
   Patch,
   Post,
+  UseInterceptors,
 } from '@nestjs/common';
 import { EmployeesService } from './employees.service';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
@@ -20,6 +22,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { Employee } from './entities/employee.entity';
+import { NotFoundInterceptor } from '../interceptors/not-found.interceptor';
 
 @Controller({ path: 'employees', version: '1' })
 @ApiTags('employees')
@@ -95,9 +98,10 @@ export class EmployeesControllerV1 {
   }
 
   @Get(':id')
+  @UseInterceptors(NotFoundInterceptor)
   @ApiOperation({ summary: 'View an employee by ID' })
   @ApiParam({ name: 'id', description: 'UUID of the employee' })
-  findOne(@Param('id', ParseUUIDPipe) id: string) {
+  findOne(@Param('id', ParseUUIDPipe) id: string): Promise<Employee | null> {
     return this.employeesService.findOne(id);
   }
 
@@ -124,7 +128,9 @@ export class EmployeesControllerV1 {
     description: 'The record was found and deleted successfully.',
   })
   async remove(@Param('id', ParseUUIDPipe) id: string) {
-    await this.findOne(id); // throw 404 if not found
+    if ((await this.findOne(id)) == null) {
+      throw new NotFoundException(); // throw 404 if not found
+    }
     return this.employeesService.remove(id);
   }
 

@@ -25,7 +25,7 @@ export class EmployeesService {
   }
 
   async findAll(): Promise<Employee[]> {
-    return this.repository.find();
+    return this.repository.find(); // TODO: add pagination
   }
 
   async findOne(id: string): Promise<Employee | null> {
