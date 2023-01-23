@@ -26,14 +26,14 @@ export class AuthService {
   }
 
   async login(loginDto: LoginDto): Promise<TokenDto | null> {
-    const user = await this.validateUser(loginDto);
+    const user = await this.validateUser(loginDto); // ensure if this user is legit
     if (user) {
       const payload = { username: user.username, sub: user.id };
       // TODO: base64 encode the token
       // TODO: add refresh_token system
       // TODO: add RBAC
-      const accessToken: string = this.jwtService.sign(payload);
-      const decodedToken: any = this.jwtService.decode(accessToken);
+      const accessToken: string = this.jwtService.sign(payload); // generate JWT
+      const decodedToken: any = this.jwtService.decode(accessToken); // decode to get expiry
       return { accessToken: accessToken, expiry: decodedToken['exp'] };
     }
     return null;
