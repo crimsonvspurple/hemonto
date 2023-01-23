@@ -27,7 +27,7 @@ export class Employee {
   currency: Currency;
 
   @Column({ default: false })
-  onContract: boolean; // deviating from snake_case to camelCase intentionally
+  onContract?: boolean; // deviating from snake_case to camelCase intentionally
 
   @Column({ type: 'simple-enum', enum: Department })
   department: Department;
@@ -51,9 +51,9 @@ export class Employee {
   public static fromDto(dto: CreateEmployeeDto): Employee {
     const employee = new Employee();
     employee.name = dto.name;
-    employee.salary = +dto.salary; // what is consistency? https://i.stack.imgur.com/LLrgj.png
+    employee.salary = +dto.salary; // https://i.stack.imgur.com/LLrgj.png
     employee.currency = dto.currency;
-    employee.onContract = dto.on_contract ?? false;
+    employee.onContract = dto.on_contract;
     employee.department = dto.department;
     employee.subDepartment = dto.sub_department;
     return employee;

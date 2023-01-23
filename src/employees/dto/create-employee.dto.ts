@@ -17,7 +17,7 @@ export class CreateEmployeeDto {
   @IsEnum(Currency)
   currency: Currency;
   @IsBooleanString()
-  on_contract?: boolean = false; // keeping this snake_case in-case some automated testing is applied
+  on_contract?: boolean; // keeping this snake_case in-case some automated testing is applied
   @IsEnum(Department)
   department: Department;
   @IsEnum(SubDepartment)
