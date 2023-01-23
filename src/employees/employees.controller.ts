@@ -5,6 +5,7 @@ import {
   Get,
   HttpCode,
   Param,
+  ParseUUIDPipe,
   Patch,
   Post,
   Response,
@@ -13,10 +14,17 @@ import { Response as Res } from 'express';
 import { EmployeesService } from './employees.service';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
-import { ApiBody, ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
+import {
+  ApiBody,
+  ApiOperation,
+  ApiParam,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { Employee } from './entities/employee.entity';
 
 @Controller({ path: 'employees', version: '1' })
+@ApiTags('employees')
 export class EmployeesControllerV1 {
   constructor(private readonly employeesService: EmployeesService) {}
 
@@ -59,7 +67,7 @@ export class EmployeesControllerV1 {
   @Get(':id')
   @ApiOperation({ summary: 'View an employee by ID' })
   @ApiParam({ name: 'id', description: 'UUID of the employee' })
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.employeesService.findOne(id);
   }
 
@@ -69,7 +77,7 @@ export class EmployeesControllerV1 {
     description: 'Not implemented yet',
   })
   update(
-    @Param('id') id: string,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() updateEmployeeDto: UpdateEmployeeDto,
   ) {
     return this.employeesService.update(id, updateEmployeeDto); // 501 Not Implemented
@@ -91,7 +99,7 @@ export class EmployeesControllerV1 {
     description: 'Error encountered during deletion.',
   })
   async remove(
-    @Param('id') id: string,
+    @Param('id', ParseUUIDPipe) id: string,
     @Response({ passthrough: true }) res: Res,
   ) {
     if (await this.employeesService.remove(id)) {
