@@ -13,7 +13,10 @@ import { AuthControllerV1 } from './auth.controller';
     PassportModule,
     JwtModule.register({
       secret: configuration().jwt.secret, // need a better way to load this
-      signOptions: { expiresIn: '120s', algorithm: 'HS512' },
+      signOptions: {
+        expiresIn: configuration().jwt.expiresIn,
+        algorithm: configuration().jwt.algorithm as any,
+      },
     }),
   ],
   providers: [AuthService, JwtStrategy],

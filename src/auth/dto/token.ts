@@ -1,3 +1,4 @@
 export class TokenDto {
-  access_token: string;
+  accessToken: string;
+  expiry: Date;
 }

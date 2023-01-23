@@ -32,7 +32,9 @@ export class AuthService {
       // TODO: base64 encode the token
       // TODO: add refresh_token system
       // TODO: add RBAC
-      return { access_token: this.jwtService.sign(payload) };
+      const accessToken: string = this.jwtService.sign(payload);
+      const decodedToken: any = this.jwtService.decode(accessToken);
+      return { accessToken: accessToken, expiry: decodedToken['exp'] };
     }
     return null;
   }
