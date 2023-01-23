@@ -7,8 +7,10 @@ import {
   UpdateDateColumn,
   VersionColumn,
 } from 'typeorm';
-import { Currency } from './Currency';
+import { Currency } from './currency';
+import { Department } from './department';
 import { CreateEmployeeDto } from '../dto/create-employee.dto';
+import { SubDepartment } from './sub-department';
 
 @Entity()
 export class Employee {
@@ -27,11 +29,11 @@ export class Employee {
   @Column({ default: false })
   onContract: boolean; // deviating from snake_case to camelCase intentionally
 
-  @Column()
-  department: string; // TODO: Switch to enum
+  @Column({ type: 'simple-enum', enum: Department })
+  department: Department;
 
-  @Column()
-  subDepartment: string; // TODO: Switch to enum
+  @Column({ type: 'simple-enum', enum: SubDepartment })
+  subDepartment: SubDepartment;
 
   @CreateDateColumn()
   createdAt: Date;
