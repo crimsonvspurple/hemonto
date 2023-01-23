@@ -8,9 +8,7 @@ import {
   ParseUUIDPipe,
   Patch,
   Post,
-  Response,
 } from '@nestjs/common';
-import { Response as Res } from 'express';
 import { EmployeesService } from './employees.service';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
@@ -41,6 +39,38 @@ export class EmployeesControllerV1 {
   })
   seed() {
     return this.employeesService.seed();
+  }
+
+  @ApiOperation({
+    summary: 'SS of all employees in database',
+  })
+  @Get('summary-statistics')
+  summaryStatistics() {
+    return this.employeesService.summaryStatistics();
+  }
+
+  @ApiOperation({
+    summary: 'SS of all `contract` employees in database',
+  })
+  @Get('summary-statistics/contract')
+  summaryStatisticsContract() {
+    return this.employeesService.summaryStatistics(true);
+  }
+
+  @ApiOperation({
+    summary: 'SS of all employees by department',
+  })
+  @Get('summary-statistics/department')
+  summaryStatisticsDepartment() {
+    return this.employeesService.summaryStatisticsDepartment();
+  }
+
+  @ApiOperation({
+    summary: 'SS of all employees by department and sub-department',
+  })
+  @Get('summary-statistics/sub-department')
+  summaryStatisticsSubDepartment() {
+    return this.employeesService.summaryStatisticsSubDepartment();
   }
 
   @Post()
@@ -93,26 +123,14 @@ export class EmployeesControllerV1 {
     content: undefined,
     description: 'The record was found and deleted successfully.',
   })
-  @ApiResponse({
-    status: 400,
-    content: undefined,
-    description: 'Error encountered during deletion.',
-  })
-  async remove(
-    @Param('id', ParseUUIDPipe) id: string,
-    @Response({ passthrough: true }) res: Res,
-  ) {
-    if (await this.employeesService.remove(id)) {
-      res.status(204); // 204 No Content for successful deletion
-    } else {
-      res.status(400); // 400 Bad Request for unsuccessful deletion
-    }
-    return;
+  async remove(@Param('id', ParseUUIDPipe) id: string) {
+    await this.findOne(id); // throw 404 if not found
+    return this.employeesService.remove(id);
   }
 
   @ApiOperation({
     summary:
-      'WARNING: Truncates the table/Deletes all employees. It here for convenience.',
+      'WARNING: Truncates the table/Deletes all employees. It is here for convenience.',
   })
   @Delete()
   @HttpCode(204)
