@@ -4,7 +4,7 @@
 </p>
 
 ## Description
-A rapid prototype of a REST API system for some slicing and dicing!
+A rapid prototype of a REST API system for some slicing and dicing! `docker-compose up` and `localhost:3000/api` is all you need to get started.
 
 ## Goals
 - [x] Get hands wet with NestJS. Great framework for building scalable Node.js applications. Documentation is very good.
@@ -34,7 +34,7 @@ A rapid prototype of a REST API system for some slicing and dicing!
 - Use of DTOs and Entities are very important. DTOs are used for validation and Entities are used for database operations.
 - Global pipes and interceptors can be used for logging, validation, and other purposes. Really important for better code structure.
 - Have to always be careful about DB query. Instead of querying the employees and calculating mean/min/max (SS), doing it over the DB is much faster/effective.
-- 
+- Code has to be well documented and efficient. Always have to think about edge cases and scalability.
 
 ## Quick Start
 ```bash
