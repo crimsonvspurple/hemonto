@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
   Param,
   Patch,
   Post,
@@ -17,6 +18,11 @@ import { ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
 @Controller({ path: 'employees', version: '1' })
 export class EmployeesControllerV1 {
   constructor(private readonly employeesService: EmployeesService) {}
+
+  @Post('seed')
+  seed() {
+    return this.employeesService.seed();
+  }
 
   @Post()
   create(@Body() createEmployeeDto: CreateEmployeeDto) {
@@ -43,6 +49,7 @@ export class EmployeesControllerV1 {
 
   // noinspection SpellCheckingInspection
   @Delete(':id')
+  @HttpCode(204)
   @ApiOperation({ summary: 'Delete an employee by ID' })
   @ApiParam({ name: 'id', description: 'UUID of the employee' })
   @ApiResponse({
@@ -72,6 +79,7 @@ export class EmployeesControllerV1 {
       'WARNING: Truncates the table/Deletes all employees. It here for convenience.',
   })
   @Delete()
+  @HttpCode(204)
   async removeAll() {
     return this.employeesService.removeAll();
   }

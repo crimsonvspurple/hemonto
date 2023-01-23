@@ -4,6 +4,7 @@ import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Employee } from './entities/employee.entity';
 import { DeleteResult, Repository } from 'typeorm';
+import { employeesSeed } from './seed/employeesSeed';
 
 @Injectable()
 export class EmployeesService {
@@ -47,5 +48,12 @@ export class EmployeesService {
 
   removeAll() {
     return this.repository.clear();
+  }
+
+  seed() {
+    // loop on seed and create all employees
+    return this.repository.save(
+      employeesSeed.map((employee) => Employee.fromDto(employee)),
+    );
   }
 }
