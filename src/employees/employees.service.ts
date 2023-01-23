@@ -138,28 +138,31 @@ export class EmployeesService {
       {} as SummaryStatisticsSubDepartmentDto;
 
     // generate the output object with dummy in-case we have no employees
-    for (const key in Department) {
-      out[key as Department] = {} as Record<
-        SubDepartment,
-        SummaryStatisticsDto
-      >;
-      for (const subKey in SubDepartment) {
-        out[key as Department][subKey as SubDepartment] = {
-          mean: Number.NaN,
-          min: Number.NaN,
-          max: Number.NaN,
-        };
-      }
-    }
+    // for (const key in Department) {
+    //   out[key as Department] = {} as Record<
+    //     SubDepartment,
+    //     SummaryStatisticsDto
+    //   >;
+    //   for (const subKey in SubDepartment) {
+    //     out[key as Department][subKey as SubDepartment] = {
+    //       mean: Number.NaN,
+    //       min: Number.NaN,
+    //       max: Number.NaN,
+    //     };
+    //   }
+    // }
 
     if (result.length > 0) {
       result.forEach((row) => {
-        out[row.department as Department][row.subDepartment as SubDepartment] =
-          {
-            mean: row.mean,
-            min: row.min,
-            max: row.max,
-          };
+        const department: Department = row.department;
+        if (!out[department]) {
+          out[department] = {} as Record<SubDepartment, SummaryStatisticsDto>;
+        }
+        out[department][row.subDepartment as SubDepartment] = {
+          mean: row.mean,
+          min: row.min,
+          max: row.max,
+        };
       });
     }
     return out;
